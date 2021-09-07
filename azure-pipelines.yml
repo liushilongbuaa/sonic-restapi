@@ -1,0 +1,30 @@
+# C/C++ with GCC
+# Build your C/C++ project with GCC using make.
+# Add steps that publish test results, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/c-cpp/gcc
+
+trigger:
+  branches:
+    include:
+      - "*"
+pr:
+  branches:
+    include:
+    - "*"
+
+jobs:
+- job: Build
+  pool: sonicbld
+  checkout: self
+  steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        source: specific
+        project: build
+        pipeline: 142
+        artifact: sonic-buildimage.vs
+        runVersion: 'latestFromBranch'
+        runBranch: $(Build.SourceBranch)
+        patterns: 'target/debs/**'
+        path: $(Build.SourcesDirectory)/debs/
+      displayName: "Download artifacts from latest sonic-buildimage build"
