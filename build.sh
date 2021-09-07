@@ -1,9 +1,6 @@
 
 set -e
 
-# copy debian packages from sonic-buildimage
-bash copy.sh
-
 # build a container with build utilities
 docker build -t rest-api-build-image --rm -f Dockerfile.build .
 
